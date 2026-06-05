@@ -1,7 +1,17 @@
 import { createClient } from '@supabase/supabase-js';
+import type { Metadata } from 'next';
 import AdminDashboard from './AdminDashboard';
 
 export const revalidate = 0; // Disable caching for the admin page
+
+export const metadata: Metadata = {
+  title: "Admin Dashboard | LSC TSA Forge Hub",
+  description: "Internal dashboard for LSC TSA Forge Hub responses.",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default async function AdminPage() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
