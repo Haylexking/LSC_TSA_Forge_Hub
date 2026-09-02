@@ -15,7 +15,7 @@ import Link from 'next/link';
 import { submitSurvey } from './actions';
 import ForgeLogo from '@/components/ForgeLogo';
 
-// ─── Option Button (Emil Kowalski Tactile Style) ───────────────
+// ─── Option Button (Emil Kowalski Light Mode Tactile Style) ───
 function OptionButton({ 
   label, 
   isSelected, 
@@ -33,18 +33,18 @@ function OptionButton({
     <button
       type="button"
       onClick={onClick}
-      className={`w-full p-4 md:p-4.5 mb-2.5 rounded-xl border text-left transition-all duration-150 flex items-center justify-between group active:scale-[0.99] ${
+      className={`w-full p-4 mb-2.5 rounded-xl border text-left transition-all duration-150 flex items-center justify-between group active:scale-[0.99] ${
         isSelected 
-          ? 'border-white/[0.24] bg-white/[0.08] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18),0_2px_8px_rgba(0,0,0,0.3)] text-white' 
-          : 'border-white/[0.06] bg-white/[0.02] hover:border-white/[0.12] hover:bg-white/[0.04] text-zinc-300'
+          ? 'border-zinc-900 bg-zinc-900 text-white shadow-sm ring-1 ring-zinc-900' 
+          : 'border-zinc-200 bg-white hover:border-zinc-300 hover:bg-zinc-50/80 text-zinc-700 shadow-xs'
       }`}
     >
       <div className="flex flex-col pr-3">
-        <span className={`text-sm md:text-[15px] font-medium leading-snug ${isSelected ? 'text-white font-semibold' : 'text-zinc-200'}`}>
+        <span className={`text-sm md:text-[15px] font-semibold leading-snug ${isSelected ? 'text-white' : 'text-zinc-800'}`}>
           {label}
         </span>
         {description && (
-          <span className="text-xs text-zinc-400 mt-0.5">{description}</span>
+          <span className={`text-xs mt-0.5 ${isSelected ? 'text-zinc-300' : 'text-zinc-500'}`}>{description}</span>
         )}
       </div>
 
@@ -54,7 +54,7 @@ function OptionButton({
         } ${
           isSelected 
             ? 'border-white bg-white text-zinc-950' 
-            : 'border-zinc-600 bg-transparent group-hover:border-zinc-400'
+            : 'border-zinc-300 bg-zinc-50 group-hover:border-zinc-400'
         }`}
       >
         {isSelected && (
@@ -65,7 +65,7 @@ function OptionButton({
   );
 }
 
-// ─── Text Input (Tactile Surface) ──────────────────────────────
+// ─── Text Input (Light Tactile Surface) ────────────────────────
 function TextInput({ 
   placeholder, 
   value, 
@@ -81,13 +81,13 @@ function TextInput({
 }) {
   return (
     <div className="mb-4">
-      {label && <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">{label}</label>}
+      {label && <label className="block text-xs font-bold text-zinc-600 uppercase tracking-wider mb-2">{label}</label>}
       <input 
         type={type}
         value={value || ''}
         onChange={onChange}
         placeholder={placeholder}
-        className="w-full px-4 py-3.5 rounded-xl border border-white/[0.08] bg-zinc-900/60 shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)] focus:border-white/30 focus:ring-1 focus:ring-white/20 outline-none transition-all text-sm text-zinc-100 placeholder:text-zinc-400"
+        className="w-full px-4 py-3.5 rounded-xl border border-zinc-200 bg-white shadow-xs focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 outline-none transition-all text-sm text-zinc-900 placeholder:text-zinc-400 font-medium"
       />
     </div>
   );
@@ -106,21 +106,21 @@ function StepHeader({
   subtitle: string;
 }) {
   return (
-    <div className="mb-8">
+    <div className="mb-7">
       <div className="flex items-center gap-2 mb-2">
-        <span className="text-[11px] font-semibold uppercase tracking-widest text-zinc-400">
+        <span className="text-[11px] font-bold uppercase tracking-widest text-amber-700">
           Step {stepNum} of {totalSteps}
         </span>
       </div>
-      <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white mb-2">{title}</h2>
-      <p className="text-zinc-400 text-sm md:text-base leading-relaxed">{subtitle}</p>
+      <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-zinc-950 mb-1.5">{title}</h2>
+      <p className="text-zinc-600 text-sm md:text-base leading-relaxed">{subtitle}</p>
     </div>
   );
 }
 
 // ─── Question Label ──────────────────────────────────────────
 function QuestionLabel({ children }: { children: React.ReactNode }) {
-  return <p className="font-semibold text-zinc-200 mb-3 text-sm md:text-[15px]">{children}</p>;
+  return <p className="font-bold text-zinc-900 mb-2.5 text-sm md:text-[15px]">{children}</p>;
 }
 
 interface SurveyFormData {
@@ -282,8 +282,8 @@ export default function SurveyClient() {
     const url = window.location.origin + '/survey';
     if (navigator.share) {
       navigator.share({
-        title: 'The Forge Hub Survey',
-        text: 'Take the 3-minute Forge Hub survey to find your personalized career & mentorship pathway!',
+        title: 'LSC TSA Forge Hub Assessment',
+        text: 'Take the 3-minute Forge Hub assessment to find your tailored career & mentorship pathway!',
         url,
       }).catch(() => {});
     } else {
@@ -293,66 +293,66 @@ export default function SurveyClient() {
     }
   };
 
-  // ─── Thank You / Outcome Screen ────────────────────────────
+  // ─── Outcome / Thank You Screen ────────────────────────────
   if (submitted) {
     const seg = segmentInfo[matchedSegment] || segmentInfo['General'];
     return (
-      <main className="min-h-screen bg-[#09090b] text-white relative">
-        <div className="fixed inset-0 pointer-events-none bg-grid-subtle opacity-30" />
+      <main className="min-h-screen bg-[#fafafa] text-zinc-900 relative">
+        <div className="fixed inset-0 pointer-events-none bg-grid-subtle-light opacity-50" />
 
         {/* Top Minimal Bar */}
-        <div className="border-b border-white/[0.06] bg-[#09090b]/80 backdrop-blur-xl">
+        <div className="border-b border-zinc-200/80 bg-white/80 backdrop-blur-xl">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
             <Link href="/">
               <ForgeLogo size="sm" showText={true} />
             </Link>
-            <span className="text-xs text-zinc-400 font-medium">Submission Complete</span>
+            <span className="text-xs text-zinc-500 font-bold">Assessment Complete</span>
           </div>
         </div>
 
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 pt-16 pb-24 relative z-10">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 pt-14 pb-20 relative z-10">
           
           {/* Header */}
-          <div className="text-center mb-10 animate-fade-up">
-            <div className="w-14 h-14 mx-auto mb-6 rounded-2xl bg-zinc-800/90 border border-white/[0.12] flex items-center justify-center shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)]">
-              <Check className="w-6 h-6 text-white stroke-[2.5]" />
+          <div className="text-center mb-8 animate-fade-up">
+            <div className="w-14 h-14 mx-auto mb-5 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center shadow-xs">
+              <Check className="w-6 h-6 text-amber-700 stroke-[2.5]" />
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-2">
-              Survey Completed
+            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-zinc-950 mb-2">
+              Assessment Completed
             </h1>
-            <p className="text-zinc-400 text-sm md:text-base max-w-md mx-auto leading-relaxed">
-              Your answers have been recorded. Here is your matched pathway summary.
+            <p className="text-zinc-600 text-sm md:text-base max-w-md mx-auto leading-relaxed">
+              Your responses have been recorded. Here is your preliminary bootcamp cohort placement.
             </p>
           </div>
 
           {/* Matched Cohort Card */}
-          <div className="surface-card rounded-2xl p-6 mb-6 border border-white/[0.08] animate-fade-up-delay-1">
-            <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/[0.06]">
-              <span className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">Matched Pathway</span>
-              <span className="text-xs px-2.5 py-1 rounded-md bg-white/[0.06] text-zinc-200 font-medium border border-white/[0.04]">
+          <div className="surface-card rounded-2xl p-6 mb-5 border border-zinc-200/90 animate-fade-up-delay-1 shadow-sm">
+            <div className="flex items-center justify-between pb-3.5 mb-3.5 border-b border-zinc-100">
+              <span className="text-[11px] font-bold text-amber-800 uppercase tracking-wider">Matched Cohort Track</span>
+              <span className="text-xs px-2.5 py-0.5 rounded-md bg-zinc-100 text-zinc-800 font-bold border border-zinc-200">
                 {seg.badge}
               </span>
             </div>
-            <h2 className="text-2xl font-bold text-white mb-2">{matchedSegment}</h2>
-            <p className="text-sm text-zinc-400 leading-relaxed">{seg.desc}</p>
+            <h2 className="text-2xl font-extrabold text-zinc-950 mb-1.5">{matchedSegment}</h2>
+            <p className="text-sm text-zinc-600 leading-relaxed">{seg.desc}</p>
           </div>
 
-          {/* What Happens Next Timeline */}
-          <div className="surface-card rounded-2xl p-6 mb-8 border border-white/[0.08] animate-fade-up-delay-2">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-6">Next Steps</h3>
-            <div className="space-y-5">
+          {/* Next Steps Timeline */}
+          <div className="surface-card rounded-2xl p-6 mb-7 border border-zinc-200/90 animate-fade-up-delay-2 shadow-sm">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-500 mb-5">Next Steps</h3>
+            <div className="space-y-4">
               {[
-                { num: '1', title: 'Profile Analysis', desc: 'Our leadership team will review your specific goals and skill requirements.' },
+                { num: '1', title: 'Profile Review', desc: 'Our leadership team evaluates your skill focus and career objectives.' },
                 { num: '2', title: 'Mentor & Cohort Assignment', desc: 'You will be grouped into your track with dedicated mentors and peers.' },
-                { num: '3', title: 'Roadmap Kickoff', desc: 'You will receive personalized resources and onboarding info within 48 hours.' },
+                { num: '3', title: 'Bootcamp & Track Access', desc: 'You will receive personalized resources and onboarding details within 48 hours.' },
               ].map((item) => (
-                <div key={item.num} className="flex items-start gap-4">
-                  <div className="w-7 h-7 rounded-lg bg-zinc-800 border border-white/[0.08] flex items-center justify-center text-xs font-bold text-zinc-200 shrink-0">
+                <div key={item.num} className="flex items-start gap-3.5">
+                  <div className="w-7 h-7 rounded-lg bg-zinc-900 flex items-center justify-center text-xs font-bold text-white shrink-0">
                     {item.num}
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-white mb-0.5">{item.title}</h4>
-                    <p className="text-xs text-zinc-400 leading-relaxed">{item.desc}</p>
+                    <h4 className="text-sm font-bold text-zinc-900 mb-0.5">{item.title}</h4>
+                    <p className="text-xs text-zinc-600 leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -366,7 +366,7 @@ export default function SurveyClient() {
               className="btn-primary w-full sm:w-auto px-6 py-3 rounded-xl font-semibold text-xs text-center flex items-center justify-center gap-2"
             >
               <span>Back to Home</span>
-              <ArrowRight className="w-3.5 h-3.5 text-zinc-800" />
+              <ArrowRight className="w-3.5 h-3.5 text-zinc-300" />
             </Link>
             
             <button
@@ -375,13 +375,13 @@ export default function SurveyClient() {
             >
               {copied ? (
                 <>
-                  <Check className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Link Copied!</span>
+                  <Check className="w-3.5 h-3.5 text-emerald-600" />
+                  <span className="text-emerald-700 font-bold">Link Copied!</span>
                 </>
               ) : (
                 <>
-                  <Share2 className="w-3.5 h-3.5" />
-                  <span>Share Survey</span>
+                  <Share2 className="w-3.5 h-3.5 text-zinc-600" />
+                  <span>Share Assessment</span>
                 </>
               )}
             </button>
@@ -393,43 +393,43 @@ export default function SurveyClient() {
   }
 
   return (
-    <main className="min-h-screen bg-[#09090b] text-white selection:bg-zinc-700 selection:text-white relative">
+    <main className="min-h-screen bg-[#fafafa] text-zinc-900 relative">
       
-      {/* Background Grid Pattern */}
-      <div className="fixed inset-0 pointer-events-none bg-grid-subtle opacity-30" />
+      {/* Light Grid Pattern */}
+      <div className="fixed inset-0 pointer-events-none bg-grid-subtle-light opacity-50" />
 
       {/* Top Navbar */}
-      <div className="fixed top-0 left-0 right-0 z-50 border-b border-white/[0.06] bg-[#09090b]/85 backdrop-blur-xl">
+      <div className="fixed top-0 left-0 right-0 z-50 border-b border-zinc-200/80 bg-white/85 backdrop-blur-xl">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
             <ForgeLogo size="sm" showText={true} />
           </Link>
           
-          <div className="flex items-center gap-2 text-xs text-zinc-400">
-            <ShieldCheck className="w-3.5 h-3.5 text-zinc-400" />
-            <span>Confidential Response</span>
+          <div className="flex items-center gap-1.5 text-xs text-zinc-500 font-medium">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Confidential Assessment</span>
           </div>
         </div>
       </div>
 
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 pt-24 pb-20 relative z-10">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 pt-22 pb-20 relative z-10">
         
         {/* Progress Tracker */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-2.5">
-            <span className="text-[11px] font-semibold text-zinc-400 uppercase tracking-widest">Progress</span>
-            <span className="text-xs font-mono font-medium text-zinc-300">{progressPct}%</span>
+        <div className="mb-7">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest">Progress</span>
+            <span className="text-xs font-mono font-bold text-zinc-800">{progressPct}%</span>
           </div>
-          <div className="w-full h-1 bg-zinc-800/80 rounded-full overflow-hidden">
+          <div className="w-full h-1.5 bg-zinc-200 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-zinc-200 transition-all duration-300 ease-out rounded-full shadow-[0_0_8px_rgba(255,255,255,0.3)]" 
+              className="h-full bg-zinc-900 transition-all duration-300 ease-out rounded-full" 
               style={{ width: `${progressPct}%` }} 
             />
           </div>
         </div>
         
         {/* Main Survey Card */}
-        <div className="surface-card rounded-2xl p-6 sm:p-8 border border-white/[0.08]">
+        <div className="surface-card rounded-2xl p-6 sm:p-8 border border-zinc-200/90 shadow-sm">
           
           {/* ─── STEP 1: Core Identity ─── */}
           {step === 1 && (
@@ -438,10 +438,10 @@ export default function SurveyClient() {
                 stepNum={1} 
                 totalSteps={totalSteps} 
                 title="Let's get to know you" 
-                subtitle="Help us categorize your current stage and tailor the right cohort." 
+                subtitle="Help us understand your background to match you with the right cohort." 
               />
               
-              <div className="space-y-8">
+              <div className="space-y-7">
                 <div>
                   <QuestionLabel>What is your age range?</QuestionLabel>
                   {['Under 16', '16–20', '21–25', '26–30', '31+'].map(a => (
@@ -520,9 +520,9 @@ export default function SurveyClient() {
                 stepNum={2} 
                 totalSteps={totalSteps} 
                 title="Your Background" 
-                subtitle="Provide details regarding your current academic or professional setting." 
+                subtitle="Provide details regarding your current academic or professional context." 
               />
-              <div className="space-y-6">
+              <div className="space-y-5">
                 {(isUnder16 || isSecSchool) && (
                   <>
                     <TextInput 
@@ -615,9 +615,9 @@ export default function SurveyClient() {
                 stepNum={3} 
                 totalSteps={totalSteps} 
                 title="Career Direction & Skills" 
-                subtitle="Tell us how you envision your trajectory and skill growth." 
+                subtitle="Tell us how you envision your professional trajectory and learning." 
               />
-              <div className="space-y-6">
+              <div className="space-y-5">
                 {(isAdult || isTeen) && !isUnder16 && (
                   <>
                     <div>
@@ -637,7 +637,7 @@ export default function SurveyClient() {
                       ))}
                     </div>
                     
-                    <div className="pt-4 border-t border-white/[0.06]">
+                    <div className="pt-3 border-t border-zinc-100">
                       <QuestionLabel>Are you currently learning any skill outside your primary field?</QuestionLabel>
                       {['Yes', 'No'].map(o => (
                         <OptionButton 
@@ -650,7 +650,7 @@ export default function SurveyClient() {
                     </div>
                     
                     {formData.learning_skill === 'Yes' && (
-                      <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] animate-fade-up">
+                      <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-200 animate-fade-up">
                         <TextInput 
                           label="Which skill(s) are you currently exploring?" 
                           placeholder="e.g. Product Design, Data Analytics, Web Development" 
@@ -671,11 +671,11 @@ export default function SurveyClient() {
               <StepHeader 
                 stepNum={4} 
                 totalSteps={totalSteps} 
-                title="Support Needs" 
-                subtitle="Select the areas where Forge Hub can accelerate your growth." 
+                title="Support Requisites" 
+                subtitle="Select the areas where the Forge Hub can accelerate your advancement." 
               />
 
-              <div className="space-y-6">
+              <div className="space-y-5">
                 {isAdult && (
                   <>
                     <div>
@@ -737,10 +737,10 @@ export default function SurveyClient() {
               <StepHeader 
                 stepNum={5} 
                 totalSteps={totalSteps} 
-                title="Mentorship & Contact" 
-                subtitle="Provide your contact info so we can deliver your cohort matching." 
+                title="Mentorship & Contact Details" 
+                subtitle="Provide your contact information so we can reach you with your cohort placement." 
               />
-              <div className="space-y-6">
+              <div className="space-y-5">
                 <div>
                   <QuestionLabel>Would you like to be paired with a mentor?</QuestionLabel>
                   {['Yes', 'No'].map(o => (
@@ -754,7 +754,7 @@ export default function SurveyClient() {
                 </div>
 
                 {formData.want_mentorship === 'Yes' && (
-                  <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] animate-fade-up">
+                  <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-200 animate-fade-up">
                     <QuestionLabel>Select areas of mentorship interest</QuestionLabel>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-2">
                       {['Career Progression', 'Academics', 'Leadership', 'Business Strategy', 'Technical Skills', 'Transitioning Fields'].map(o => (
@@ -782,8 +782,8 @@ export default function SurveyClient() {
                   ))}
                 </div>
 
-                <div className="pt-6 border-t border-white/[0.06]">
-                  <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-4">Your Contact Information</p>
+                <div className="pt-5 border-t border-zinc-100">
+                  <p className="text-xs font-bold text-zinc-600 uppercase tracking-wider mb-3">Your Contact Details</p>
                   <TextInput 
                     label="Full Name" 
                     placeholder="e.g. John Doe" 
@@ -816,18 +816,18 @@ export default function SurveyClient() {
                 stepNum={6} 
                 totalSteps={totalSteps} 
                 title="Stay Connected" 
-                subtitle="We are delighted to welcome visitors into our Forge network." 
+                subtitle="We are delighted to welcome visitors into our Forge community." 
               />
-              <div className="space-y-6">
+              <div className="space-y-5">
                 <TextInput 
                   label="How did you hear about Forge Hub?" 
-                  placeholder="e.g. Friend, Social Media, Event" 
+                  placeholder="e.g. Friend, Social Media, Church Event" 
                   value={formData.how_heard} 
                   onChange={(e) => updateForm('how_heard', e.target.value)} 
                 />
                 <TextInput 
                   label="What attracted you most to this initiative?" 
-                  placeholder="e.g. Mentorship, Skill building, Networking" 
+                  placeholder="e.g. Mentorship, Skill tracks, Community" 
                   value={formData.what_attracted} 
                   onChange={(e) => updateForm('what_attracted', e.target.value)} 
                 />
@@ -846,8 +846,8 @@ export default function SurveyClient() {
             </div>
           )}
 
-          {/* ─── Navigation Footer ─── */}
-          <div className="mt-10 pt-6 border-t border-white/[0.06] flex items-center justify-between gap-3">
+          {/* ─── Navigation Controls ─── */}
+          <div className="mt-8 pt-5 border-t border-zinc-100 flex items-center justify-between gap-3">
             <button 
               type="button"
               onClick={handleBack} 
@@ -863,7 +863,7 @@ export default function SurveyClient() {
               disabled={submitting || !canProceed()} 
               className={`px-6 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all ${
                 submitting || !canProceed() 
-                  ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed border border-white/[0.04]' 
+                  ? 'bg-zinc-200 text-zinc-400 cursor-not-allowed' 
                   : 'btn-primary'
               }`}
             >
@@ -874,7 +874,7 @@ export default function SurveyClient() {
                 </>
               ) : (step === totalSteps || (isUnder16 && step === 2)) ? (
                 <>
-                  <span>Submit Survey</span>
+                  <span>Submit Assessment</span>
                   <Send className="w-3.5 h-3.5" />
                 </>
               ) : (

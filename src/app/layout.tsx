@@ -16,21 +16,21 @@ const getBaseUrl = (): URL => {
 export const metadata: Metadata = {
   metadataBase: getBaseUrl(),
   title: {
-    default: "LSC TSA Forge Hub | Career & Mentorship Pathways",
+    default: "LSC TSA Forge Hub | Career & Leadership Bootcamp",
     template: "%s | LSC TSA Forge Hub",
   },
-  description: "Discover your pathway, build your future. The Forge Hub connects you with industry mentorship, career clarity, and a thriving peer community. Complete our survey in under 3 minutes.",
+  description: "Discover your pathway, build your future. Living Seeds Church TSA Forge Hub connects youths, students, and professionals with industry mentorship and purpose-driven career roadmaps.",
   keywords: [
     "LSC TSA",
     "Living Seeds Church",
     "The Forge Hub",
-    "Forge Hub",
-    "Career Mentorship",
-    "Church Career Survey",
-    "NextGen",
-    "Undergraduate Program",
-    "Professional Pathway",
-    "Entrepreneurship Community"
+    "Forge Bootcamp",
+    "Church Career Bootcamp",
+    "Mentorship Program",
+    "NextGen Youth",
+    "Undergraduate Track",
+    "Professional Excellence",
+    "Kingdom Entrepreneurship"
   ],
   authors: [{ name: "Living Seeds Church TSA" }],
   creator: "LSC TSA Forge Hub Team",
@@ -46,18 +46,18 @@ export const metadata: Metadata = {
     url: "/",
     siteName: "LSC TSA Forge Hub",
     title: "LSC TSA Forge Hub | Discover Your Path, Build Your Future",
-    description: "Complete our 3-minute career and mentorship survey to find your tailored cohort, match with mentors, and start growing today.",
+    description: "Complete our 3-minute career & mentorship survey to join your tailored bootcamp cohort, match with mentors, and start growing.",
   },
   twitter: {
     card: "summary_large_image",
     title: "LSC TSA Forge Hub | Discover Your Path, Build Your Future",
-    description: "Complete our 3-minute career and mentorship survey to find your tailored cohort, match with mentors, and start growing today.",
+    description: "Complete our 3-minute career & mentorship survey to join your tailored bootcamp cohort, match with mentors, and start growing.",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#09090b",
-  colorScheme: "dark",
+  themeColor: "#ffffff",
+  colorScheme: "light",
   width: "device-width",
   initialScale: 1,
 };
@@ -71,9 +71,9 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className="h-full antialiased dark"
+      className="h-full antialiased bg-[#fafafa] text-zinc-900"
     >
-      <body className="min-h-full flex flex-col bg-[#09090b] text-zinc-100">{children}</body>
+      <body className="min-h-full flex flex-col bg-[#fafafa] text-zinc-900 selection:bg-amber-100 selection:text-amber-950">{children}</body>
     </html>
   );
 }
