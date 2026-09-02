@@ -3,18 +3,24 @@
 import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-const adminPassword = process.env.ADMIN_PASSWORD || 'forgeadmin2026';
-
-const supabase = createClient(supabaseUrl, supabaseKey);
-
 const AUTH_COOKIE_NAME = 'forge_admin_session';
+
+function getSupabase() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error('Supabase URL and Anon Key must be configured in environment variables.');
+  }
+
+  return createClient(supabaseUrl, supabaseKey);
+}
 
 // Verify password or session token
 export async function authenticateAdmin(passwordOrEmail: string, password?: string) {
   try {
     const cookieStore = await cookies();
+    const adminPassword = process.env.ADMIN_PASSWORD || 'forgeadmin2026';
 
     // 1. Check if direct Master Passcode was supplied
     if (!password) {
@@ -31,6 +37,7 @@ export async function authenticateAdmin(passwordOrEmail: string, password?: stri
     }
 
     // 2. Otherwise authenticate via Supabase Auth
+    const supabase = getSupabase();
     const { data, error } = await supabase.auth.signInWithPassword({
       email: passwordOrEmail,
       password: password,
@@ -59,28 +66,37 @@ export async function authenticateAdmin(passwordOrEmail: string, password?: stri
 
 // Check if currently authenticated
 export async function checkAdminSession() {
-  const cookieStore = await cookies();
-  const sessionCookie = cookieStore.get(AUTH_COOKIE_NAME);
-  return { isAuthenticated: !!sessionCookie?.value };
+  try {
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get(AUTH_COOKIE_NAME);
+    return { isAuthenticated: !!sessionCookie?.value };
+  } catch {
+    return { isAuthenticated: false };
+  }
 }
 
 // Log out
 export async function logoutAdmin() {
-  const cookieStore = await cookies();
-  cookieStore.delete(AUTH_COOKIE_NAME);
-  return { success: true };
+  try {
+    const cookieStore = await cookies();
+    cookieStore.delete(AUTH_COOKIE_NAME);
+    return { success: true };
+  } catch {
+    return { success: false };
+  }
 }
 
 // Fetch responses securely
 export async function fetchSurveyResponses() {
-  const cookieStore = await cookies();
-  const sessionCookie = cookieStore.get(AUTH_COOKIE_NAME);
-
-  if (!sessionCookie?.value) {
-    return { success: false, error: 'Unauthorized. Please sign in.' };
-  }
-
   try {
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get(AUTH_COOKIE_NAME);
+
+    if (!sessionCookie?.value) {
+      return { success: false, error: 'Unauthorized. Please sign in.' };
+    }
+
+    const supabase = getSupabase();
     const { data, error } = await supabase
       .from('forge_survey_responses')
       .select('*')

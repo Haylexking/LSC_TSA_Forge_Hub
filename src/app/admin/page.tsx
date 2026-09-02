@@ -3,7 +3,8 @@ import { cookies } from 'next/headers';
 import { createClient } from '@supabase/supabase-js';
 import AdminDashboard from './AdminDashboard';
 
-export const revalidate = 0; // Disable caching for the admin page
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "Operations Console | LSC TSA Forge Hub",
@@ -15,23 +16,28 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminPage() {
-  const cookieStore = await cookies();
-  const sessionCookie = cookieStore.get('forge_admin_session');
-  const isAuthenticated = !!sessionCookie?.value;
-
+  let isAuthenticated = false;
   let initialData: Record<string, unknown>[] = [];
 
-  if (isAuthenticated) {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-    const supabase = createClient(supabaseUrl, supabaseKey);
+  try {
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get('forge_admin_session');
+    isAuthenticated = !!sessionCookie?.value;
 
-    const { data: responses } = await supabase
-      .from('forge_survey_responses')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    initialData = (responses as Record<string, unknown>[]) || [];
+    if (isAuthenticated) {
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+      if (supabaseUrl && supabaseKey) {
+        const supabase = createClient(supabaseUrl, supabaseKey);
+        const { data: responses } = await supabase
+          .from('forge_survey_responses')
+          .select('*')
+          .order('created_at', { ascending: false });
+        initialData = (responses as Record<string, unknown>[]) || [];
+      }
+    }
+  } catch (err) {
+    console.error('Error in AdminPage:', err);
   }
 
   return (

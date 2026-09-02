@@ -1,14 +1,20 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL
-  ? `https://${process.env.NEXT_PUBLIC_APP_URL}`
-  : process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+const getBaseUrl = (): URL => {
+  const urlString = process.env.NEXT_PUBLIC_APP_URL || process.env.VERCEL_URL || 'http://localhost:3000';
+  const cleanUrl = urlString.startsWith('http://') || urlString.startsWith('https://') 
+    ? urlString 
+    : `https://${urlString}`;
+  try {
+    return new URL(cleanUrl);
+  } catch {
+    return new URL('http://localhost:3000');
+  }
+};
 
 export const metadata: Metadata = {
-  metadataBase: new URL(baseUrl),
+  metadataBase: getBaseUrl(),
   title: {
     default: "LSC TSA Forge Hub | Career & Mentorship Pathways",
     template: "%s | LSC TSA Forge Hub",
@@ -49,7 +55,7 @@ export const metadata: Metadata = {
   },
 };
 
-export const viewport = {
+export const viewport: Viewport = {
   themeColor: "#09090b",
   colorScheme: "dark",
   width: "device-width",
