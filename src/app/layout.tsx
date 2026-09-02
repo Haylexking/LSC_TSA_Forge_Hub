@@ -1,16 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL
   ? `https://${process.env.NEXT_PUBLIC_APP_URL}`
@@ -21,7 +10,7 @@ const baseUrl = process.env.NEXT_PUBLIC_APP_URL
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "LSC TSA Forge Hub | Career & Mentorship Survey",
+    default: "LSC TSA Forge Hub | Career & Mentorship Pathways",
     template: "%s | LSC TSA Forge Hub",
   },
   description: "Discover your pathway, build your future. The Forge Hub connects you with industry mentorship, career clarity, and a thriving peer community. Complete our survey in under 3 minutes.",
@@ -76,9 +65,9 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className="h-full antialiased dark"
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col bg-[#09090b] text-zinc-100">{children}</body>
     </html>
   );
 }

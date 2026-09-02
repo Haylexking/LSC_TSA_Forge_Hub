@@ -15,7 +15,7 @@ export default async function Image() {
     (
       <div
         style={{
-          background: 'linear-gradient(to bottom right, #09090b, #111115)',
+          background: '#09090b',
           width: '100%',
           height: '100%',
           display: 'flex',
@@ -28,37 +28,26 @@ export default async function Image() {
           padding: '40px 80px',
         }}
       >
-        {/* Background glow orbs */}
+        {/* Subtle non-neon ambient orb */}
         <div
           style={{
             position: 'absolute',
             top: '-20%',
-            left: '-10%',
+            left: '30%',
             width: '600px',
-            height: '600px',
-            background: 'radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0) 70%)',
-            display: 'flex',
-          }}
-        />
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '-20%',
-            right: '-10%',
-            width: '600px',
-            height: '600px',
-            background: 'radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, rgba(139, 92, 246, 0) 70%)',
+            height: '400px',
+            background: 'radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, rgba(0, 0, 0, 0) 70%)',
             display: 'flex',
           }}
         />
 
-        {/* Outer Border with slight glow */}
+        {/* Outer Border with refined Emil Kowalski style */}
         <div
           style={{
             position: 'absolute',
-            inset: '30px',
-            border: '1px solid rgba(255, 255, 255, 0.05)',
-            borderRadius: '24px',
+            inset: '24px',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            borderRadius: '20px',
             pointerEvents: 'none',
             display: 'flex',
           }}
@@ -80,32 +69,33 @@ export default async function Image() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '12px',
-              border: '1px solid rgba(99, 102, 241, 0.3)',
-              background: 'rgba(99, 102, 241, 0.1)',
-              padding: '10px 24px',
+              gap: '10px',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              background: 'rgba(255, 255, 255, 0.04)',
+              padding: '8px 20px',
               borderRadius: '9999px',
               marginBottom: '32px',
             }}
           >
             <div
               style={{
-                width: '24px',
-                height: '24px',
+                width: '20px',
+                height: '20px',
                 borderRadius: '6px',
-                background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+                background: '#27272a',
+                border: '1px solid rgba(255,255,255,0.15)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <span style={{ fontSize: '12px', fontWeight: 'bold', color: 'white' }}>⚡</span>
+              <span style={{ fontSize: '10px', fontWeight: 'bold', color: '#f4f4f5' }}>F</span>
             </div>
             <span
               style={{
-                fontSize: '16px',
+                fontSize: '14px',
                 fontWeight: 600,
-                color: '#a5b4fc',
+                color: '#d4d4d8',
                 letterSpacing: '1px',
                 textTransform: 'uppercase',
               }}
@@ -119,25 +109,23 @@ export default async function Image() {
             style={{
               fontSize: '64px',
               fontWeight: 800,
-              margin: '0 0 20px 0',
+              margin: '0 0 18px 0',
               lineHeight: 1.1,
               letterSpacing: '-2px',
-              background: 'linear-gradient(to right, #ffffff, #c7d2fe, #818cf8)',
-              backgroundClip: 'text',
-              color: 'transparent',
+              color: '#ffffff',
               display: 'flex',
               flexDirection: 'column',
             }}
           >
             <span>Discover Your Path.</span>
-            <span>Build Your Future.</span>
+            <span style={{ color: '#a1a1aa' }}>Build Your Future.</span>
           </h1>
 
           {/* Description */}
           <p
             style={{
               fontSize: '22px',
-              color: '#a1a1aa',
+              color: '#71717a',
               maxWidth: '720px',
               margin: '0 0 40px 0',
               lineHeight: 1.5,
@@ -147,7 +135,7 @@ export default async function Image() {
             Take our 3-minute career & mentorship survey to find your cohort, match with mentors, and start growing.
           </p>
 
-          {/* Stats / Steps */}
+          {/* Steps */}
           <div
             style={{
               display: 'flex',
@@ -162,10 +150,10 @@ export default async function Image() {
                 alignItems: 'center',
               }}
             >
-              <span style={{ fontSize: '12px', color: '#6366f1', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 'bold' }}>Step 01</span>
-              <span style={{ fontSize: '18px', color: '#e4e4e7', fontWeight: 600, marginTop: '4px' }}>Complete Survey</span>
+              <span style={{ fontSize: '11px', color: '#a1a1aa', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 'bold' }}>Step 01</span>
+              <span style={{ fontSize: '16px', color: '#e4e4e7', fontWeight: 600, marginTop: '4px' }}>Complete Survey</span>
             </div>
-            <div style={{ width: '1px', height: '40px', background: 'rgba(255,255,255,0.1)' }} />
+            <div style={{ width: '1px', height: '32px', background: 'rgba(255,255,255,0.1)' }} />
             <div
               style={{
                 display: 'flex',
@@ -173,10 +161,10 @@ export default async function Image() {
                 alignItems: 'center',
               }}
             >
-              <span style={{ fontSize: '12px', color: '#8b5cf6', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 'bold' }}>Step 02</span>
-              <span style={{ fontSize: '18px', color: '#e4e4e7', fontWeight: 600, marginTop: '4px' }}>Get Cohort Match</span>
+              <span style={{ fontSize: '11px', color: '#a1a1aa', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 'bold' }}>Step 02</span>
+              <span style={{ fontSize: '16px', color: '#e4e4e7', fontWeight: 600, marginTop: '4px' }}>Get Cohort Match</span>
             </div>
-            <div style={{ width: '1px', height: '40px', background: 'rgba(255,255,255,0.1)' }} />
+            <div style={{ width: '1px', height: '32px', background: 'rgba(255,255,255,0.1)' }} />
             <div
               style={{
                 display: 'flex',
@@ -184,8 +172,8 @@ export default async function Image() {
                 alignItems: 'center',
               }}
             >
-              <span style={{ fontSize: '12px', color: '#ec4899', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 'bold' }}>Step 03</span>
-              <span style={{ fontSize: '18px', color: '#e4e4e7', fontWeight: 600, marginTop: '4px' }}>Start Mentorship</span>
+              <span style={{ fontSize: '11px', color: '#a1a1aa', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 'bold' }}>Step 03</span>
+              <span style={{ fontSize: '16px', color: '#e4e4e7', fontWeight: 600, marginTop: '4px' }}>Start Mentorship</span>
             </div>
           </div>
         </div>
