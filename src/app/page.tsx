@@ -97,12 +97,6 @@ export default function Home() {
           </Link>
 
           <div className="flex items-center gap-3">
-            <Link
-              href="/admin"
-              className="text-xs font-medium text-zinc-400 hover:text-zinc-200 px-3 py-1.5 rounded-lg border border-transparent hover:border-white/[0.06] transition-all hidden sm:inline-block"
-            >
-              Admin
-            </Link>
             <Link 
               href="/survey"
               className="btn-primary text-xs font-semibold px-4 py-2 rounded-xl inline-flex items-center gap-1.5"

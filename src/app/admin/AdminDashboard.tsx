@@ -16,10 +16,18 @@ import {
   ArrowUpRight,
   Filter,
   Check,
-  Copy
+  Copy,
+  Lock,
+  KeyRound,
+  LogOut,
+  RefreshCw,
+  Eye,
+  EyeOff,
+  ShieldAlert
 } from 'lucide-react';
 import Link from 'next/link';
-import ForgeLogo from '@/components/ForgeLogo';
+import ForgeLogo, { ForgeMark } from '@/components/ForgeLogo';
+import { authenticateAdmin, logoutAdmin, fetchSurveyResponses } from './actions';
 
 // ─── Segment badge config (Refined Non-Neon Palette) ───────────
 const segmentStyles: Record<string, { bg: string; text: string; dot: string; border: string }> = {
@@ -55,21 +63,84 @@ const segmentStyles: Record<string, { bg: string; text: string; dot: string; bor
   },
 };
 
-export default function AdminDashboard({ initialData }: { initialData: any[] }) {
+export default function AdminDashboard({ 
+  initialData = [],
+  initialAuthenticated = false 
+}: { 
+  initialData: any[];
+  initialAuthenticated?: boolean;
+}) {
+  const [isAuthenticated, setIsAuthenticated] = useState(initialAuthenticated);
+  const [data, setData] = useState<any[]>(initialData);
   const [filter, setFilter] = useState('All');
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
-  const stats = {
-    total: initialData.length,
-    teens: initialData.filter(d => d.user_segment === 'Teen / NextGen').length,
-    undergrads: initialData.filter(d => d.user_segment === 'Undergraduate').length,
-    professionals: initialData.filter(d => d.user_segment === 'Professional').length,
-    entrepreneurs: initialData.filter(d => d.user_segment === 'Entrepreneur').length,
+  // Auth form state
+  const [authMode, setAuthMode] = useState<'passcode' | 'supabase'>('passcode');
+  const [passcode, setPasscode] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [authLoading, setAuthLoading] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthLoading(true);
+    setAuthError(null);
+
+    try {
+      let res;
+      if (authMode === 'passcode') {
+        res = await authenticateAdmin(passcode);
+      } else {
+        res = await authenticateAdmin(email, password);
+      }
+
+      if (res.success) {
+        setIsAuthenticated(true);
+        // Refresh data
+        const dataRes = await fetchSurveyResponses();
+        if (dataRes.success && dataRes.data) {
+          setData(dataRes.data);
+        }
+      } else {
+        setAuthError(res.error || 'Invalid credentials');
+      }
+    } catch (err: any) {
+      setAuthError(err.message || 'Authentication failed');
+    } finally {
+      setAuthLoading(false);
+    }
   };
 
-  const filteredData = initialData
+  const handleLogout = async () => {
+    await logoutAdmin();
+    setIsAuthenticated(false);
+    setData([]);
+  };
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    const res = await fetchSurveyResponses();
+    if (res.success && res.data) {
+      setData(res.data);
+    }
+    setRefreshing(false);
+  };
+
+  const stats = {
+    total: data.length,
+    teens: data.filter(d => d.user_segment === 'Teen / NextGen').length,
+    undergrads: data.filter(d => d.user_segment === 'Undergraduate').length,
+    professionals: data.filter(d => d.user_segment === 'Professional').length,
+    entrepreneurs: data.filter(d => d.user_segment === 'Entrepreneur').length,
+  };
+
+  const filteredData = data
     .filter(d => filter === 'All' || d.user_segment === filter)
     .filter(d => {
       if (!searchQuery) return true;
@@ -92,10 +163,10 @@ export default function AdminDashboard({ initialData }: { initialData: any[] }) 
   };
 
   const exportCSV = () => {
-    if (!initialData.length) return;
-    const keys = Object.keys(initialData[0]).filter(k => k !== 'id');
+    if (!data.length) return;
+    const keys = Object.keys(data[0]).filter(k => k !== 'id');
     const header = keys.join(',');
-    const rows = initialData.map(row => keys.map(k => {
+    const rows = data.map(row => keys.map(k => {
       const val = Array.isArray(row[k]) ? row[k].join('; ') : (row[k] ?? '');
       return `"${String(val).replace(/"/g, '""')}"`;
     }).join(','));
@@ -109,6 +180,161 @@ export default function AdminDashboard({ initialData }: { initialData: any[] }) 
     URL.revokeObjectURL(url);
   };
 
+  // ─── Unauthenticated Auth Gate (Emil Kowalski Tactile Style) ─
+  if (!isAuthenticated) {
+    return (
+      <main className="min-h-screen bg-[#09090b] text-zinc-100 flex flex-col justify-center items-center px-4 relative selection:bg-zinc-700 selection:text-white">
+        
+        {/* Background Grid */}
+        <div className="fixed inset-0 pointer-events-none bg-grid-subtle opacity-30" />
+
+        <div className="w-full max-w-sm relative z-10 animate-fade-up">
+          
+          {/* Brand Mark Lockup */}
+          <div className="text-center mb-8">
+            <div className="w-12 h-12 mx-auto mb-4">
+              <ForgeMark size="lg" />
+            </div>
+            <h1 className="text-xl font-bold tracking-tight text-white">Operations Console</h1>
+            <p className="text-xs text-zinc-400 mt-1">Authorized access only</p>
+          </div>
+
+          {/* Login Card */}
+          <div className="surface-card rounded-2xl p-6 border border-white/[0.08] shadow-2xl">
+            
+            {/* Mode Switcher */}
+            <div className="flex p-1 rounded-xl bg-zinc-900/80 border border-white/[0.06] mb-5">
+              <button
+                type="button"
+                onClick={() => { setAuthMode('passcode'); setAuthError(null); }}
+                className={`flex-1 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                  authMode === 'passcode' 
+                    ? 'bg-white text-zinc-950 font-semibold shadow-sm' 
+                    : 'text-zinc-400 hover:text-zinc-200'
+                }`}
+              >
+                Access Key
+              </button>
+              <button
+                type="button"
+                onClick={() => { setAuthMode('supabase'); setAuthError(null); }}
+                className={`flex-1 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                  authMode === 'supabase' 
+                    ? 'bg-white text-zinc-950 font-semibold shadow-sm' 
+                    : 'text-zinc-400 hover:text-zinc-200'
+                }`}
+              >
+                Supabase Auth
+              </button>
+            </div>
+
+            {/* Error Message */}
+            {authError && (
+              <div className="p-3 mb-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-300 text-xs flex items-start gap-2">
+                <ShieldAlert className="w-4 h-4 shrink-0 mt-0.5 text-red-400" />
+                <span>{authError}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleLogin} className="space-y-4">
+              {authMode === 'passcode' ? (
+                <div>
+                  <label className="block text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-2">
+                    Master Passcode
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      value={passcode}
+                      onChange={(e) => setPasscode(e.target.value)}
+                      placeholder="Enter admin passcode"
+                      autoFocus
+                      required
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-white/[0.08] bg-zinc-900/60 text-zinc-100 placeholder:text-zinc-400 text-xs outline-none focus:border-white/30 focus:ring-1 focus:ring-white/20 transition-all pr-10 font-mono"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-200"
+                    >
+                      {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div>
+                    <label className="block text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-2">
+                      Admin Email
+                    </label>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="admin@livingseedschurch.org"
+                      required
+                      autoFocus
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-white/[0.08] bg-zinc-900/60 text-zinc-100 placeholder:text-zinc-400 text-xs outline-none focus:border-white/30 focus:ring-1 focus:ring-white/20 transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-2">
+                      Password
+                    </label>
+                    <div className="relative">
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="••••••••"
+                        required
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-white/[0.08] bg-zinc-900/60 text-zinc-100 placeholder:text-zinc-400 text-xs outline-none focus:border-white/30 focus:ring-1 focus:ring-white/20 transition-all pr-10"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-200"
+                      >
+                        {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              <button
+                type="submit"
+                disabled={authLoading}
+                className="btn-primary w-full py-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 mt-2"
+              >
+                {authLoading ? (
+                  <>
+                    <svg className="animate-spin w-3.5 h-3.5" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+                    <span>Authenticating...</span>
+                  </>
+                ) : (
+                  <>
+                    <Lock className="w-3.5 h-3.5" />
+                    <span>Unlock Dashboard</span>
+                  </>
+                )}
+              </button>
+            </form>
+
+            <div className="mt-5 pt-4 border-t border-white/[0.06] text-center">
+              <Link href="/" className="text-[11px] text-zinc-400 hover:text-zinc-300 transition-colors">
+                ← Return to Public Website
+              </Link>
+            </div>
+
+          </div>
+
+        </div>
+      </main>
+    );
+  }
+
+  // ─── Authenticated Console ──────────────────────────────────
   return (
     <main className="min-h-screen bg-[#09090b] text-zinc-100 relative">
       
@@ -123,19 +349,29 @@ export default function AdminDashboard({ initialData }: { initialData: any[] }) 
               <ForgeLogo size="sm" subtitle="Operations Console" />
             </Link>
           </div>
-          <div className="flex items-center gap-2.5">
-            <Link
-              href="/"
-              className="text-xs text-zinc-400 hover:text-white px-3 py-1.5 rounded-lg border border-transparent hover:border-white/[0.06] transition-all"
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleRefresh}
+              disabled={refreshing}
+              title="Refresh Data"
+              className="p-2 rounded-lg border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.05] text-zinc-400 hover:text-white transition-all"
             >
-              Public Site
-            </Link>
+              <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin' : ''}`} />
+            </button>
             <button
               onClick={exportCSV}
-              className="btn-secondary text-xs font-semibold px-3.5 py-1.5 rounded-lg inline-flex items-center gap-1.5"
+              className="btn-secondary text-xs font-semibold px-3 py-1.5 rounded-lg inline-flex items-center gap-1.5"
             >
               <Download className="w-3.5 h-3.5" />
-              <span>Export CSV</span>
+              <span className="hidden sm:inline">Export CSV</span>
+            </button>
+            <button
+              onClick={handleLogout}
+              className="p-2 rounded-lg border border-red-500/20 bg-red-500/5 hover:bg-red-500/10 text-red-400 hover:text-red-300 transition-all text-xs font-medium flex items-center gap-1.5"
+              title="Lock & Logout"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Logout</span>
             </button>
           </div>
         </div>
@@ -200,7 +436,7 @@ export default function AdminDashboard({ initialData }: { initialData: any[] }) 
         {/* Results Count Header */}
         <div className="flex items-center justify-between text-xs text-zinc-400 px-1">
           <span>
-            Showing <strong className="text-zinc-200">{filteredData.length}</strong> of {initialData.length} records
+            Showing <strong className="text-zinc-200">{filteredData.length}</strong> of {data.length} records
           </span>
         </div>
 
