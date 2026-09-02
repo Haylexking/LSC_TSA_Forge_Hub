@@ -16,21 +16,20 @@ const getBaseUrl = (): URL => {
 export const metadata: Metadata = {
   metadataBase: getBaseUrl(),
   title: {
-    default: "LSC TSA Forge Hub | Career & Leadership Bootcamp",
+    default: "LSC TSA Forge Hub | Career & Leadership Foundry",
     template: "%s | LSC TSA Forge Hub",
   },
-  description: "Discover your pathway, build your future. Living Seeds Church TSA Forge Hub connects youths, students, and professionals with industry mentorship and purpose-driven career roadmaps.",
+  description: "Discover your pathway, build your future. The Forge Hub connects youths, undergraduates, and professionals with 1:1 mentorship and practical skill tracks. Complete our 3-minute assessment.",
   keywords: [
     "LSC TSA",
     "Living Seeds Church",
     "The Forge Hub",
     "Forge Bootcamp",
-    "Church Career Bootcamp",
-    "Mentorship Program",
+    "Career Mentorship",
     "NextGen Youth",
-    "Undergraduate Track",
+    "Undergraduate Program",
     "Professional Excellence",
-    "Kingdom Entrepreneurship"
+    "Entrepreneurship Community"
   ],
   authors: [{ name: "Living Seeds Church TSA" }],
   creator: "LSC TSA Forge Hub Team",
@@ -46,18 +45,18 @@ export const metadata: Metadata = {
     url: "/",
     siteName: "LSC TSA Forge Hub",
     title: "LSC TSA Forge Hub | Discover Your Path, Build Your Future",
-    description: "Complete our 3-minute career & mentorship survey to join your tailored bootcamp cohort, match with mentors, and start growing.",
+    description: "Complete our 3-minute career & mentorship survey to join your tailored cohort, match with mentors, and start growing.",
   },
   twitter: {
     card: "summary_large_image",
     title: "LSC TSA Forge Hub | Discover Your Path, Build Your Future",
-    description: "Complete our 3-minute career & mentorship survey to join your tailored bootcamp cohort, match with mentors, and start growing.",
+    description: "Complete our 3-minute career & mentorship survey to join your tailored cohort, match with mentors, and start growing.",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
-  colorScheme: "light",
+  themeColor: "#090a0c",
+  colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
 };
@@ -71,9 +70,9 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className="h-full antialiased bg-[#fafafa] text-zinc-900"
+      className="h-full antialiased dark"
     >
-      <body className="min-h-full flex flex-col bg-[#fafafa] text-zinc-900 selection:bg-amber-100 selection:text-amber-950">{children}</body>
+      <body className="min-h-full flex flex-col bg-[#090a0c] text-zinc-100 selection:bg-zinc-700 selection:text-white">{children}</body>
     </html>
   );
 }

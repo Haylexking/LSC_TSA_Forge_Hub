@@ -15,7 +15,7 @@ import Link from 'next/link';
 import { submitSurvey } from './actions';
 import ForgeLogo from '@/components/ForgeLogo';
 
-// ─── Option Button (Emil Kowalski Light Mode Tactile Style) ───
+// ─── Option Button (Elevated Bento Tactile Style) ─────────────
 function OptionButton({ 
   label, 
   isSelected, 
@@ -33,18 +33,18 @@ function OptionButton({
     <button
       type="button"
       onClick={onClick}
-      className={`w-full p-4 mb-2.5 rounded-xl border text-left transition-all duration-150 flex items-center justify-between group active:scale-[0.99] ${
+      className={`w-full p-4 mb-2 rounded-xl border text-left transition-all duration-150 flex items-center justify-between group active:scale-[0.99] ${
         isSelected 
-          ? 'border-zinc-900 bg-zinc-900 text-white shadow-sm ring-1 ring-zinc-900' 
-          : 'border-zinc-200 bg-white hover:border-zinc-300 hover:bg-zinc-50/80 text-zinc-700 shadow-xs'
+          ? 'border-white/[0.28] bg-zinc-800 text-white shadow-xs' 
+          : 'border-white/[0.07] bg-zinc-900/60 hover:border-white/[0.14] hover:bg-zinc-900 text-zinc-300'
       }`}
     >
       <div className="flex flex-col pr-3">
-        <span className={`text-sm md:text-[15px] font-semibold leading-snug ${isSelected ? 'text-white' : 'text-zinc-800'}`}>
+        <span className={`text-sm md:text-[15px] font-semibold leading-snug ${isSelected ? 'text-white' : 'text-zinc-200'}`}>
           {label}
         </span>
         {description && (
-          <span className={`text-xs mt-0.5 ${isSelected ? 'text-zinc-300' : 'text-zinc-500'}`}>{description}</span>
+          <span className="text-xs text-zinc-400 mt-0.5">{description}</span>
         )}
       </div>
 
@@ -54,7 +54,7 @@ function OptionButton({
         } ${
           isSelected 
             ? 'border-white bg-white text-zinc-950' 
-            : 'border-zinc-300 bg-zinc-50 group-hover:border-zinc-400'
+            : 'border-zinc-700 bg-zinc-900 group-hover:border-zinc-500'
         }`}
       >
         {isSelected && (
@@ -65,7 +65,7 @@ function OptionButton({
   );
 }
 
-// ─── Text Input (Light Tactile Surface) ────────────────────────
+// ─── Text Input (Elevated Bento Surface) ───────────────────────
 function TextInput({ 
   placeholder, 
   value, 
@@ -81,13 +81,13 @@ function TextInput({
 }) {
   return (
     <div className="mb-4">
-      {label && <label className="block text-xs font-bold text-zinc-600 uppercase tracking-wider mb-2">{label}</label>}
+      {label && <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">{label}</label>}
       <input 
         type={type}
         value={value || ''}
         onChange={onChange}
         placeholder={placeholder}
-        className="w-full px-4 py-3.5 rounded-xl border border-zinc-200 bg-white shadow-xs focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 outline-none transition-all text-sm text-zinc-900 placeholder:text-zinc-400 font-medium"
+        className="w-full px-4 py-3 rounded-xl border border-white/[0.08] bg-zinc-900/80 focus:border-white/30 focus:ring-1 focus:ring-white/20 outline-none transition-all text-sm text-zinc-100 placeholder:text-zinc-400 font-medium"
       />
     </div>
   );
@@ -108,19 +108,19 @@ function StepHeader({
   return (
     <div className="mb-7">
       <div className="flex items-center gap-2 mb-2">
-        <span className="text-[11px] font-bold uppercase tracking-widest text-amber-700">
+        <span className="text-[11px] font-mono font-semibold uppercase tracking-widest text-zinc-400">
           Step {stepNum} of {totalSteps}
         </span>
       </div>
-      <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-zinc-950 mb-1.5">{title}</h2>
-      <p className="text-zinc-600 text-sm md:text-base leading-relaxed">{subtitle}</p>
+      <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white mb-1.5">{title}</h2>
+      <p className="text-zinc-400 text-sm md:text-base leading-relaxed">{subtitle}</p>
     </div>
   );
 }
 
 // ─── Question Label ──────────────────────────────────────────
 function QuestionLabel({ children }: { children: React.ReactNode }) {
-  return <p className="font-bold text-zinc-900 mb-2.5 text-sm md:text-[15px]">{children}</p>;
+  return <p className="font-semibold text-zinc-200 mb-2.5 text-sm md:text-[15px]">{children}</p>;
 }
 
 interface SurveyFormData {
@@ -297,16 +297,16 @@ export default function SurveyClient() {
   if (submitted) {
     const seg = segmentInfo[matchedSegment] || segmentInfo['General'];
     return (
-      <main className="min-h-screen bg-[#fafafa] text-zinc-900 relative">
-        <div className="fixed inset-0 pointer-events-none bg-grid-subtle-light opacity-50" />
+      <main className="min-h-screen bg-[#090a0c] text-white relative">
+        <div className="fixed inset-0 pointer-events-none bg-grid-dark opacity-35" />
 
-        {/* Top Minimal Bar */}
-        <div className="border-b border-zinc-200/80 bg-white/80 backdrop-blur-xl">
+        {/* Top Bar */}
+        <div className="border-b border-white/[0.08] bg-[#090a0c]/85 backdrop-blur-xl">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
             <Link href="/">
               <ForgeLogo size="sm" showText={true} />
             </Link>
-            <span className="text-xs text-zinc-500 font-bold">Assessment Complete</span>
+            <span className="text-xs text-zinc-400 font-mono">Assessment Complete</span>
           </div>
         </div>
 
@@ -314,59 +314,59 @@ export default function SurveyClient() {
           
           {/* Header */}
           <div className="text-center mb-8 animate-fade-up">
-            <div className="w-14 h-14 mx-auto mb-5 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center shadow-xs">
-              <Check className="w-6 h-6 text-amber-700 stroke-[2.5]" />
+            <div className="w-14 h-14 mx-auto mb-5 rounded-2xl bg-zinc-900 border border-white/[0.12] flex items-center justify-center shadow-xs">
+              <Check className="w-6 h-6 text-white stroke-[2.5]" />
             </div>
-            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-zinc-950 mb-2">
+            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-2">
               Assessment Completed
             </h1>
-            <p className="text-zinc-600 text-sm md:text-base max-w-md mx-auto leading-relaxed">
-              Your responses have been recorded. Here is your preliminary bootcamp cohort placement.
+            <p className="text-zinc-400 text-sm md:text-base max-w-md mx-auto leading-relaxed">
+              Your responses have been recorded. Here is your preliminary cohort placement.
             </p>
           </div>
 
           {/* Matched Cohort Card */}
-          <div className="surface-card rounded-2xl p-6 mb-5 border border-zinc-200/90 animate-fade-up-delay-1 shadow-sm">
-            <div className="flex items-center justify-between pb-3.5 mb-3.5 border-b border-zinc-100">
-              <span className="text-[11px] font-bold text-amber-800 uppercase tracking-wider">Matched Cohort Track</span>
-              <span className="text-xs px-2.5 py-0.5 rounded-md bg-zinc-100 text-zinc-800 font-bold border border-zinc-200">
+          <div className="bento-card rounded-2xl p-6 mb-5 border border-white/[0.08] animate-fade-up-delay-1">
+            <div className="flex items-center justify-between pb-3.5 mb-3.5 border-b border-white/[0.06]">
+              <span className="text-[11px] font-mono font-semibold uppercase tracking-wider text-zinc-400">Matched Cohort</span>
+              <span className="text-xs px-2.5 py-0.5 rounded-md bg-zinc-800 text-zinc-200 font-semibold border border-white/[0.06]">
                 {seg.badge}
               </span>
             </div>
-            <h2 className="text-2xl font-extrabold text-zinc-950 mb-1.5">{matchedSegment}</h2>
-            <p className="text-sm text-zinc-600 leading-relaxed">{seg.desc}</p>
+            <h2 className="text-2xl font-extrabold text-white mb-1.5">{matchedSegment}</h2>
+            <p className="text-sm text-zinc-400 leading-relaxed">{seg.desc}</p>
           </div>
 
           {/* Next Steps Timeline */}
-          <div className="surface-card rounded-2xl p-6 mb-7 border border-zinc-200/90 animate-fade-up-delay-2 shadow-sm">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-500 mb-5">Next Steps</h3>
+          <div className="bento-card rounded-2xl p-6 mb-7 border border-white/[0.08] animate-fade-up-delay-2">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-5">Next Steps</h3>
             <div className="space-y-4">
               {[
-                { num: '1', title: 'Profile Review', desc: 'Our leadership team evaluates your skill focus and career objectives.' },
+                { num: '1', title: 'Profile Analysis', desc: 'Our leadership team evaluates your skill focus and career goals.' },
                 { num: '2', title: 'Mentor & Cohort Assignment', desc: 'You will be grouped into your track with dedicated mentors and peers.' },
-                { num: '3', title: 'Bootcamp & Track Access', desc: 'You will receive personalized resources and onboarding details within 48 hours.' },
+                { num: '3', title: 'Onboarding & Track Access', desc: 'You will receive personalized resources and onboarding details within 48 hours.' },
               ].map((item) => (
                 <div key={item.num} className="flex items-start gap-3.5">
-                  <div className="w-7 h-7 rounded-lg bg-zinc-900 flex items-center justify-center text-xs font-bold text-white shrink-0">
+                  <div className="w-7 h-7 rounded-lg bg-zinc-800 border border-white/[0.08] flex items-center justify-center text-xs font-bold text-white shrink-0">
                     {item.num}
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold text-zinc-900 mb-0.5">{item.title}</h4>
-                    <p className="text-xs text-zinc-600 leading-relaxed">{item.desc}</p>
+                    <h4 className="text-sm font-bold text-white mb-0.5">{item.title}</h4>
+                    <p className="text-xs text-zinc-400 leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Action Buttons */}
+          {/* Actions */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 animate-fade-up-delay-3">
             <Link
               href="/"
               className="btn-primary w-full sm:w-auto px-6 py-3 rounded-xl font-semibold text-xs text-center flex items-center justify-center gap-2"
             >
               <span>Back to Home</span>
-              <ArrowRight className="w-3.5 h-3.5 text-zinc-300" />
+              <ArrowRight className="w-3.5 h-3.5 text-zinc-900" />
             </Link>
             
             <button
@@ -375,12 +375,12 @@ export default function SurveyClient() {
             >
               {copied ? (
                 <>
-                  <Check className="w-3.5 h-3.5 text-emerald-600" />
-                  <span className="text-emerald-700 font-bold">Link Copied!</span>
+                  <Check className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Link Copied!</span>
                 </>
               ) : (
                 <>
-                  <Share2 className="w-3.5 h-3.5 text-zinc-600" />
+                  <Share2 className="w-3.5 h-3.5" />
                   <span>Share Assessment</span>
                 </>
               )}
@@ -393,20 +393,20 @@ export default function SurveyClient() {
   }
 
   return (
-    <main className="min-h-screen bg-[#fafafa] text-zinc-900 relative">
+    <main className="min-h-screen bg-[#090a0c] text-zinc-100 relative">
       
-      {/* Light Grid Pattern */}
-      <div className="fixed inset-0 pointer-events-none bg-grid-subtle-light opacity-50" />
+      {/* Background Pattern */}
+      <div className="fixed inset-0 pointer-events-none bg-grid-dark opacity-35" />
 
       {/* Top Navbar */}
-      <div className="fixed top-0 left-0 right-0 z-50 border-b border-zinc-200/80 bg-white/85 backdrop-blur-xl">
+      <div className="fixed top-0 left-0 right-0 z-50 border-b border-white/[0.08] bg-[#090a0c]/85 backdrop-blur-xl">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
             <ForgeLogo size="sm" showText={true} />
           </Link>
           
-          <div className="flex items-center gap-1.5 text-xs text-zinc-500 font-medium">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+          <div className="flex items-center gap-1.5 text-xs text-zinc-400 font-medium">
+            <ShieldCheck className="w-3.5 h-3.5 text-zinc-400" />
             <span>Confidential Assessment</span>
           </div>
         </div>
@@ -417,19 +417,19 @@ export default function SurveyClient() {
         {/* Progress Tracker */}
         <div className="mb-7">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest">Progress</span>
-            <span className="text-xs font-mono font-bold text-zinc-800">{progressPct}%</span>
+            <span className="text-[11px] font-mono font-semibold text-zinc-400 uppercase tracking-widest">Progress</span>
+            <span className="text-xs font-mono font-bold text-zinc-300">{progressPct}%</span>
           </div>
-          <div className="w-full h-1.5 bg-zinc-200 rounded-full overflow-hidden">
+          <div className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-zinc-900 transition-all duration-300 ease-out rounded-full" 
+              className="h-full bg-white transition-all duration-300 ease-out rounded-full" 
               style={{ width: `${progressPct}%` }} 
             />
           </div>
         </div>
         
         {/* Main Survey Card */}
-        <div className="surface-card rounded-2xl p-6 sm:p-8 border border-zinc-200/90 shadow-sm">
+        <div className="bento-card rounded-2xl p-6 sm:p-8 border border-white/[0.08]">
           
           {/* ─── STEP 1: Core Identity ─── */}
           {step === 1 && (
@@ -637,7 +637,7 @@ export default function SurveyClient() {
                       ))}
                     </div>
                     
-                    <div className="pt-3 border-t border-zinc-100">
+                    <div className="pt-3 border-t border-white/[0.06]">
                       <QuestionLabel>Are you currently learning any skill outside your primary field?</QuestionLabel>
                       {['Yes', 'No'].map(o => (
                         <OptionButton 
@@ -650,7 +650,7 @@ export default function SurveyClient() {
                     </div>
                     
                     {formData.learning_skill === 'Yes' && (
-                      <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-200 animate-fade-up">
+                      <div className="p-4 rounded-xl bg-zinc-900 border border-white/[0.08] animate-fade-up">
                         <TextInput 
                           label="Which skill(s) are you currently exploring?" 
                           placeholder="e.g. Product Design, Data Analytics, Web Development" 
@@ -754,7 +754,7 @@ export default function SurveyClient() {
                 </div>
 
                 {formData.want_mentorship === 'Yes' && (
-                  <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-200 animate-fade-up">
+                  <div className="p-4 rounded-xl bg-zinc-900 border border-white/[0.08] animate-fade-up">
                     <QuestionLabel>Select areas of mentorship interest</QuestionLabel>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-2">
                       {['Career Progression', 'Academics', 'Leadership', 'Business Strategy', 'Technical Skills', 'Transitioning Fields'].map(o => (
@@ -782,8 +782,8 @@ export default function SurveyClient() {
                   ))}
                 </div>
 
-                <div className="pt-5 border-t border-zinc-100">
-                  <p className="text-xs font-bold text-zinc-600 uppercase tracking-wider mb-3">Your Contact Details</p>
+                <div className="pt-5 border-t border-white/[0.06]">
+                  <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Your Contact Details</p>
                   <TextInput 
                     label="Full Name" 
                     placeholder="e.g. John Doe" 
@@ -847,7 +847,7 @@ export default function SurveyClient() {
           )}
 
           {/* ─── Navigation Controls ─── */}
-          <div className="mt-8 pt-5 border-t border-zinc-100 flex items-center justify-between gap-3">
+          <div className="mt-8 pt-5 border-t border-white/[0.06] flex items-center justify-between gap-3">
             <button 
               type="button"
               onClick={handleBack} 
@@ -863,7 +863,7 @@ export default function SurveyClient() {
               disabled={submitting || !canProceed()} 
               className={`px-6 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all ${
                 submitting || !canProceed() 
-                  ? 'bg-zinc-200 text-zinc-400 cursor-not-allowed' 
+                  ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed border border-white/[0.04]' 
                   : 'btn-primary'
               }`}
             >

@@ -6,8 +6,8 @@
 }
 
 :root {
-  --background: #fafafa;
-  --foreground: #09090b;
+  --background: #090a0c;
+  --foreground: #f4f4f5;
 }
 
 body {
@@ -19,131 +19,113 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ---- Emil Kowalski Light-Mode Tactile & Interaction Utilities ---- */
+/* ---- Bento Grid & Tactile Surfaces (No-Glow Craft) ---- */
 
-/* Refined light tactile surfaces */
-.surface-card {
-  background: #ffffff;
-  border: 1px solid rgba(228, 228, 231, 0.9);
+.bento-card {
+  background: #0e1014;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 
-    0 1px 3px 0 rgba(0, 0, 0, 0.03),
-    0 8px 24px -4px rgba(0, 0, 0, 0.04);
+    0 1px 2px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
 }
 
-.surface-card-subtle {
-  background: #f4f4f5;
-  border: 1px solid rgba(228, 228, 231, 0.8);
+.bento-card-subtle {
+  background: #12151b;
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.surface-card-interactive {
-  background: #ffffff;
-  border: 1px solid rgba(228, 228, 231, 0.9);
+.bento-card-interactive {
+  background: #0e1014;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 
-    0 1px 3px 0 rgba(0, 0, 0, 0.03),
-    0 4px 12px -2px rgba(0, 0, 0, 0.03);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.surface-card-interactive:hover {
-  border-color: rgba(212, 212, 216, 1);
-  transform: translateY(-2px);
-  box-shadow: 
-    0 2px 6px 0 rgba(0, 0, 0, 0.04),
-    0 16px 32px -8px rgba(0, 0, 0, 0.08);
-}
-
-.surface-card-interactive:active {
-  transform: translateY(0) scale(0.99);
-}
-
-/* Tactile button styling (Physical UI) */
-.btn-primary {
-  background: #18181b;
-  color: #ffffff;
-  box-shadow: 
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
-    0 1px 2px 0 rgba(0, 0, 0, 0.1),
-    0 4px 12px 0 rgba(24, 24, 27, 0.15);
+    0 1px 2px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
   transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.bento-card-interactive:hover {
+  background: #121419;
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 24px -4px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+}
+
+.bento-card-interactive:active {
+  transform: translateY(0) scale(0.99);
+}
+
+/* Tactile Buttons */
+.btn-primary {
+  background: #ffffff;
+  color: #090a0c;
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.9),
+    0 1px 2px 0 rgba(0, 0, 0, 0.6),
+    0 4px 12px 0 rgba(255, 255, 255, 0.08);
+  transition: all 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 .btn-primary:hover {
-  background: #27272a;
+  background: #f4f4f5;
   transform: translateY(-1px);
   box-shadow: 
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.25),
-    0 6px 16px 0 rgba(24, 24, 27, 0.2);
+    inset 0 1px 0 0 rgba(255, 255, 255, 1),
+    0 6px 16px 0 rgba(255, 255, 255, 0.12);
 }
 
 .btn-primary:active {
   transform: translateY(0.5px) scale(0.98);
-  background: #09090b;
+  background: #e4e4e7;
 }
 
 .btn-secondary {
-  background: #ffffff;
-  color: #27272a;
-  border: 1px solid #e4e4e7;
-  box-shadow: 
-    0 1px 2px 0 rgba(0, 0, 0, 0.05),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
-  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  background: #14171d;
+  color: #e4e4e7;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.04);
+  transition: all 0.16s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-secondary:hover {
-  background: #f4f4f5;
-  border-color: #d4d4d8;
-  color: #09090b;
+  background: #1a1e26;
+  border-color: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
   transform: translateY(-1px);
 }
 
 .btn-secondary:active {
   transform: translateY(0.5px) scale(0.98);
-  background: #e4e4e7;
+  background: #111318;
 }
 
-.btn-amber {
-  background: #d97706;
-  color: #ffffff;
-  box-shadow: 
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.25),
-    0 2px 8px 0 rgba(217, 119, 6, 0.25);
-  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.btn-amber:hover {
-  background: #b45309;
-  transform: translateY(-1px);
-  box-shadow: 
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
-    0 4px 14px 0 rgba(180, 83, 9, 0.35);
-}
-
-.btn-amber:active {
-  transform: translateY(0.5px) scale(0.98);
-  background: #92400e;
-}
-
-/* Refined typography gradients */
-.text-gradient-charcoal {
-  background: linear-gradient(180deg, #09090b 0%, #27272a 60%, #52525b 100%);
+/* Crisp metallic typography */
+.text-gradient-silver {
+  background: linear-gradient(180deg, #ffffff 0%, #e4e4e7 50%, #a1a1aa 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.text-gradient-amber {
-  background: linear-gradient(180deg, #92400e 0%, #b45309 40%, #d97706 100%);
+.text-gradient-muted {
+  background: linear-gradient(180deg, #f4f4f5 0%, #a1a1aa 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Subtle micro-grid */
+.bg-grid-dark {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
 /* Micro-animations */
 @keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -152,36 +134,30 @@ body {
 }
 
 .animate-fade-up {
-  animation: fade-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fade-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-fade-up-delay-1 {
-  animation: fade-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.08s forwards;
+  animation: fade-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.06s forwards;
   opacity: 0;
 }
 
 .animate-fade-up-delay-2 {
-  animation: fade-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.16s forwards;
+  animation: fade-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.12s forwards;
   opacity: 0;
 }
 
 .animate-fade-up-delay-3 {
-  animation: fade-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.24s forwards;
+  animation: fade-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.18s forwards;
   opacity: 0;
 }
 
 .animate-fade-up-delay-4 {
-  animation: fade-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.32s forwards;
+  animation: fade-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.24s forwards;
   opacity: 0;
 }
 
-/* Light dot grid */
-.bg-grid-subtle-light {
-  background-image: radial-gradient(rgba(0, 0, 0, 0.06) 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-
-/* Subtle scrollbar */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -192,10 +168,10 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(255, 255, 255, 0.22);
 }
