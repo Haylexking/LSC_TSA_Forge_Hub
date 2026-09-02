@@ -19,7 +19,7 @@ export default async function AdminPage() {
   const sessionCookie = cookieStore.get('forge_admin_session');
   const isAuthenticated = !!sessionCookie?.value;
 
-  let initialData: any[] = [];
+  let initialData: Record<string, unknown>[] = [];
 
   if (isAuthenticated) {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
@@ -31,7 +31,7 @@ export default async function AdminPage() {
       .select('*')
       .order('created_at', { ascending: false });
 
-    initialData = responses || [];
+    initialData = (responses as Record<string, unknown>[]) || [];
   }
 
   return (

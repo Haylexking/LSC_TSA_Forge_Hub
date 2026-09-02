@@ -13,7 +13,6 @@ import {
   ArrowUpRight, 
   CheckCircle2, 
   Sparkles,
-  ShieldCheck,
   ChevronRight,
   GraduationCap,
   Briefcase,

@@ -13,12 +13,9 @@ import {
   Phone, 
   Download, 
   Layers,
-  ArrowUpRight,
-  Filter,
   Check,
   Copy,
   Lock,
-  KeyRound,
   LogOut,
   RefreshCw,
   Eye,
@@ -28,6 +25,41 @@ import {
 import Link from 'next/link';
 import ForgeLogo, { ForgeMark } from '@/components/ForgeLogo';
 import { authenticateAdmin, logoutAdmin, fetchSurveyResponses } from './actions';
+
+export interface SurveyResponse {
+  id: string;
+  name?: string;
+  email?: string;
+  phone?: string;
+  role?: string;
+  age_range?: string;
+  is_member?: string;
+  current_focus?: string;
+  open_to_multiple?: string;
+  user_segment: string;
+  school_level?: string;
+  course_of_study?: string;
+  satisfied_course?: string;
+  want_to_become?: string;
+  industry?: string;
+  job_role?: string;
+  business_type?: string;
+  biggest_challenge?: string;
+  course_relationship?: string;
+  learning_skill?: string;
+  skill_learning?: string;
+  linkedin_status?: string;
+  cv_status?: string;
+  support_needed?: string[];
+  want_mentorship?: string;
+  mentorship_area?: string[];
+  want_community?: string;
+  how_heard?: string;
+  what_attracted?: string;
+  stay_connected?: string;
+  created_at: string;
+  [key: string]: unknown;
+}
 
 // ─── Segment badge config (Refined Non-Neon Palette) ───────────
 const segmentStyles: Record<string, { bg: string; text: string; dot: string; border: string }> = {
@@ -67,11 +99,11 @@ export default function AdminDashboard({
   initialData = [],
   initialAuthenticated = false 
 }: { 
-  initialData: any[];
+  initialData: Record<string, unknown>[];
   initialAuthenticated?: boolean;
 }) {
   const [isAuthenticated, setIsAuthenticated] = useState(initialAuthenticated);
-  const [data, setData] = useState<any[]>(initialData);
+  const [data, setData] = useState<SurveyResponse[]>(initialData as unknown as SurveyResponse[]);
   const [filter, setFilter] = useState('All');
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -105,13 +137,14 @@ export default function AdminDashboard({
         // Refresh data
         const dataRes = await fetchSurveyResponses();
         if (dataRes.success && dataRes.data) {
-          setData(dataRes.data);
+          setData(dataRes.data as unknown as SurveyResponse[]);
         }
       } else {
         setAuthError(res.error || 'Invalid credentials');
       }
-    } catch (err: any) {
-      setAuthError(err.message || 'Authentication failed');
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Authentication failed';
+      setAuthError(errorMessage);
     } finally {
       setAuthLoading(false);
     }
@@ -127,7 +160,7 @@ export default function AdminDashboard({
     setRefreshing(true);
     const res = await fetchSurveyResponses();
     if (res.success && res.data) {
-      setData(res.data);
+      setData(res.data as unknown as SurveyResponse[]);
     }
     setRefreshing(false);
   };
@@ -167,7 +200,7 @@ export default function AdminDashboard({
     const keys = Object.keys(data[0]).filter(k => k !== 'id');
     const header = keys.join(',');
     const rows = data.map(row => keys.map(k => {
-      const val = Array.isArray(row[k]) ? row[k].join('; ') : (row[k] ?? '');
+      const val = Array.isArray(row[k]) ? (row[k] as string[]).join('; ') : (row[k] ?? '');
       return `"${String(val).replace(/"/g, '""')}"`;
     }).join(','));
     const csv = [header, ...rows].join('\n');
@@ -500,7 +533,7 @@ export default function AdminDashboard({
                           <div className="flex flex-wrap gap-2 mb-5">
                             {res.email && (
                               <button 
-                                onClick={() => copyToClipboard(res.email, `email-${res.id}`)}
+                                onClick={() => copyToClipboard(res.email as string, `email-${res.id}`)}
                                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800/80 border border-white/[0.08] text-zinc-200 text-xs font-medium hover:bg-zinc-800 transition-colors"
                               >
                                 <Mail className="w-3 h-3 text-zinc-400" />
@@ -514,7 +547,7 @@ export default function AdminDashboard({
                             )}
                             {res.phone && (
                               <button 
-                                onClick={() => copyToClipboard(res.phone, `phone-${res.id}`)}
+                                onClick={() => copyToClipboard(res.phone as string, `phone-${res.id}`)}
                                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800/80 border border-white/[0.08] text-zinc-200 text-xs font-medium hover:bg-zinc-800 transition-colors"
                               >
                                 <Phone className="w-3 h-3 text-zinc-400" />
@@ -611,12 +644,12 @@ function DetailSection({ title, children }: { title: string; children: React.Rea
 }
 
 // ─── Detail Row Helper ────────────────────────────────────────
-function DetailRow({ label, value }: { label: string; value: any }) {
-  if (!value || value === '') return null;
+function DetailRow({ label, value }: { label: string; value: unknown }) {
+  if (value === undefined || value === null || value === '') return null;
   return (
     <div className="flex justify-between gap-3 text-xs">
       <span className="text-zinc-400 shrink-0">{label}</span>
-      <span className="font-medium text-zinc-200 text-right">{value}</span>
+      <span className="font-medium text-zinc-200 text-right">{String(value)}</span>
     </div>
   );
 }

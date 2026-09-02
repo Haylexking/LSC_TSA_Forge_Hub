@@ -7,7 +7,7 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-export async function submitSurvey(data: any) {
+export async function submitSurvey(data: Record<string, unknown>) {
   try {
     const { error } = await supabase
       .from('forge_survey_responses')
@@ -19,8 +19,9 @@ export async function submitSurvey(data: any) {
     }
 
     return { success: true };
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'Submission failed';
     console.error('Submission failed:', err);
-    return { success: false, error: err.message };
+    return { success: false, error: errorMessage };
   }
 }

@@ -5,19 +5,15 @@ import {
   ChevronLeft, 
   ChevronRight, 
   ShieldCheck, 
-  Compass, 
-  Sparkles, 
   Send, 
   Check, 
   Share2, 
-  Copy,
-  Clock,
   ArrowRight
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { submitSurvey } from './actions';
-import ForgeLogo, { ForgeMark } from '@/components/ForgeLogo';
+import ForgeLogo from '@/components/ForgeLogo';
 
 // ─── Option Button (Emil Kowalski Tactile Style) ───────────────
 function OptionButton({ 
@@ -127,6 +123,34 @@ function QuestionLabel({ children }: { children: React.ReactNode }) {
   return <p className="font-semibold text-zinc-200 mb-3 text-sm md:text-[15px]">{children}</p>;
 }
 
+interface SurveyFormData {
+  school_level?: string;
+  favorite_subjects?: string[];
+  want_to_become?: string;
+  course_of_study?: string;
+  satisfied_course?: string;
+  industry?: string;
+  job_role?: string;
+  business_type?: string;
+  biggest_challenge?: string;
+  course_relationship?: string;
+  learning_skill?: string;
+  skill_learning?: string;
+  linkedin_status?: string;
+  cv_status?: string;
+  support_needed?: string[];
+  want_mentorship?: string;
+  mentorship_area?: string[];
+  want_community?: string;
+  name?: string;
+  email?: string;
+  phone?: string;
+  how_heard?: string;
+  what_attracted?: string;
+  stay_connected?: string;
+  [key: string]: unknown;
+}
+
 export default function SurveyClient() {
   const router = useRouter();
   const [step, setStep] = useState(1);
@@ -142,12 +166,12 @@ export default function SurveyClient() {
   const [currentFocus, setCurrentFocus] = useState<string | null>(null);
   const [openToMultiple, setOpenToMultiple] = useState<string | null>(null);
 
-  const [formData, setFormData] = useState<any>({});
+  const [formData, setFormData] = useState<SurveyFormData>({});
   
-  const updateForm = (key: string, value: any) => setFormData((prev: any) => ({ ...prev, [key]: value }));
-  const toggleArray = (key: string, value: string) => {
-    setFormData((prev: any) => {
-      const arr = prev[key] || [];
+  const updateForm = (key: keyof SurveyFormData, value: unknown) => setFormData((prev) => ({ ...prev, [key]: value }));
+  const toggleArray = (key: keyof SurveyFormData, value: string) => {
+    setFormData((prev) => {
+      const arr = (prev[key] as string[]) || [];
       if (arr.includes(value)) return { ...prev, [key]: arr.filter((x: string) => x !== value) };
       return { ...prev, [key]: [...arr, value] };
     });
@@ -321,7 +345,7 @@ export default function SurveyClient() {
                 { num: '1', title: 'Profile Analysis', desc: 'Our leadership team will review your specific goals and skill requirements.' },
                 { num: '2', title: 'Mentor & Cohort Assignment', desc: 'You will be grouped into your track with dedicated mentors and peers.' },
                 { num: '3', title: 'Roadmap Kickoff', desc: 'You will receive personalized resources and onboarding info within 48 hours.' },
-              ].map((item, i) => (
+              ].map((item) => (
                 <div key={item.num} className="flex items-start gap-4">
                   <div className="w-7 h-7 rounded-lg bg-zinc-800 border border-white/[0.08] flex items-center justify-center text-xs font-bold text-zinc-200 shrink-0">
                     {item.num}

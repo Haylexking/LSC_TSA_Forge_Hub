@@ -51,8 +51,9 @@ export async function authenticateAdmin(passwordOrEmail: string, password?: stri
     }
 
     return { success: false, error: 'Could not establish session' };
-  } catch (err: any) {
-    return { success: false, error: err.message || 'Authentication failed' };
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'Authentication failed';
+    return { success: false, error: errorMessage };
   }
 }
 
@@ -89,8 +90,9 @@ export async function fetchSurveyResponses() {
       return { success: false, error: error.message };
     }
 
-    return { success: true, data: data || [] };
-  } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: true, data: (data as Record<string, unknown>[]) || [] };
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'Failed to fetch responses';
+    return { success: false, error: errorMessage };
   }
 }
